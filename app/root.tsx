@@ -10,6 +10,17 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 
+// Registrar la licencia de Syncfusion solo en el cliente
+if (typeof window !== "undefined") {
+  const licenseKey = import.meta.env.VITE_SYNCFUSION_LICENSE_KEY;
+  if (licenseKey) {
+    // Importar Syncfusion solo en el cliente
+    import("@syncfusion/ej2-base").then((syncfusion) => {
+      syncfusion.registerLicense(licenseKey);
+    });
+  }
+}
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -22,11 +33,6 @@ export const links: Route.LinksFunction = () => [
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
 ];
-
-async () => {
-  const syncfusion = await import("@syncfusion/ej2-base");
-  syncfusion.registerLicense(import.meta.env.VITE_SYNCFUSION_LICENSE_KEY);
-};
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
